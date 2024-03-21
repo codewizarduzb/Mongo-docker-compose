@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - mongo-network
+
+  go-mongo-crud:
+    build: ./go-mongo-crud
+    container_name: go-mongo-crud
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+    networks:
+      - mongo-network
+
+networks:
+  mongo-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
